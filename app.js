@@ -19,40 +19,41 @@ app.get("/myForm", (req, res) => res.render("pages/myForm"));
 
 //Part1
 app.post("/myForm", (req, res) => {
-    let formData = req.body;
-    let my_list = formData.test.split(", ")
-    res.render("pages/index", { my_list: my_list })
+  let formData = req.body;
+  let my_list = formData.movies.split(","); // split by commas only ie (", ") or (",")
+  res.render("pages/index", { my_list: my_list })
 });
 
 //Part2
 app.get("/myListQueryString", (req, res) => {
-    let my_list = []
-    my_list.push(req.query.movie1, req.query.movie2)
-    res.render("pages/index", { my_list: my_list })
+  let my_list = [];
+  my_list.push(req.query.movie1, req.query.movie2);
+  res.render("pages/index", { my_list: my_list })
 });
 
 //Part3
 app.get("/search/:movieName", (req, res) => {
-    let movie = req.params.movieName;
-    fs.readfile("movieDescriptions.txt", (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            data = data.toString();
-            let arr = data.split("\n");
-            let arr2 = [];
-            for (item in arr) {
-                temp_arr = item.split(":");
-                let obj = { title: null, description: null }
-                obj["title"] = temp_arr[0];
-                obj["description"] = temp_arr[1];
-                arr2.push(obj);
-            }
+  let movie = req.params.movieName;
+  console.log(movie);
+  fs.readFile("movieDescriptions.txt", (err, data) => {
+    if (err) {
+      return err;
+    }
+    else {
+      data = data.toString();
+      let arr = data.split("\n");
+
+      for (let item of arr) {
+        console.log(item);
+        if (item.toLowerCase().includes(movie)) {
+          let my_list = item.split(":");
+          res.render("pages/searchResult", {my_list: my_list})
         }
-    });
-    res.render("pages/searchResult", { arr2: arr2 }, movie)
+      }
+    }
+  });
 });
 
 app.listen(3000, () => {
-    console.log("Server is running on port 3000 🚀");
+  console.log("Server is running on port 3000 🚀");
 });

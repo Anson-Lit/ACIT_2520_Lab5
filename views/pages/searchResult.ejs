@@ -7,19 +7,14 @@
     <link rel="stylesheet" href="/style.css">
     <title>Movieflix</title>
 </head>
-
 <body>
-    <% for(let item in arr2){%>
-        <%if(item.title === "movie){%>
-            <h1>
-                <%=item.title></h1>
-      <p><%=item.description></p>
-    <%}else {%>
-                    <p>Movie could not be found</p>
-                    <%}%>
-                        <%}%>
-
-
+   <% try { %>
+    <h1> <%= my_list[0]%></h1>
+    <p> <%= my_list[1] %></p>
+    <a href="/"> Home Page</a>
+  <% } catch(e) {%>
+      <% console.log(e);%>
+    <p> Movie could not be found!</p>
+  <% } %>
 </body>
-
 </html>
